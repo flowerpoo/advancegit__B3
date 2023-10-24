@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+  
+{% block body %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Manage Tasks</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Manage Tasks</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+ 
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+            <h3>Task Listing</h3>
+            <br>
+            <div class="float-right mb-2 col-md-2">
+                <form action="{{ url_for('addtask') }}" method="POST" >
+                    <button type="submit" id="addtask" value="add" class="btn btn-info" title="Add task"><span class="glyphicon glyphicon-plus">Add Task</span></button>
+               </form>
+            </div>
+            <br><br>            
+            <table class="table table-striped">
+            <thead>
+              <tr>
+                
+                <th>Task</th>
+                <th>Desc</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for tas in  task %}    
+
+            <tr>
+              
+            <td>{{tas['taskname']}}</td>
+            <td>{{tas['description']}}</td>            
+            <td><a class="btn btn-primary">Edit</a></td>      
+            <td><a class="btn btn-danger">Delete</a></td>
+          </tr> 
+              {% endfor %}
+              </tbody>
+          </table>    
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    
+{% endblock %}
