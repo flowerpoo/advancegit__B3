@@ -1,5 +1,6 @@
 from flask import Flask,flash, render_template, url_for,request,session,redirect
 import pymongo
+from bson import ObjectId
 import bcrypt
 import os,re
 
@@ -124,8 +125,48 @@ def addtask():
        # return redirect(url_for('tasks'))
     return render_template('addtask.html', mesage=mesage)
       
+@app.route("/edittask", methods=['GET','POST','PUT'])
+def edittask():
+    if 'loggedin' in session:
+        id = request.values.get('_id')
+        #print(id)
+        tas=db.task_info.find({"_id": ObjectId(id)})
+        #print(tas)
+        #if request.method == 'POST':
+         #   taskna=request.form['taskname']
+          #  taskde=request.form['description']
+           # t= db.task_info.find_one({"tashname" :taskna})
+            #task_id=str(t['_id'])
+            #db.task_info.update([{'taskname': taskna ,'description': taskde}])
+            #return redirect(url_for('tasks'))
+        return render_template('edittask.html', tasks=tas,id=id)
 
-      
+           
+@app.route("/edittask1", methods=['POST'])
+def edittask1():
+    taskname = request.values.get('taskname')
+    #taskname = request.form['taskname']
+    description = request.values.get('description')
+    # description = request.form['description']
+
+    id= request.values.get('_id')
+    print(id)
+    db.task_info.update_many({"_id": ObjectId(id)}, {'$set': {'taskname': taskname ,'description': description}})
+    return redirect(url_for('tasks'))
+    
+
+@app.route("/deletetask",methods=['GET','POST'])
+def deletetask():
+    if 'loggedin' in session:
+        
+        
+        id= request.values.get('_id')
+        print(id)
+        
+        db.task_info.delete_one({"_id": ObjectId(id)})
+        return redirect (url_for('tasks'))
+
+
         
 
 

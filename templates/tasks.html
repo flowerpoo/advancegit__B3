@@ -37,19 +37,22 @@
                 
                 <th>Task</th>
                 <th>Desc</th>
+                <th>ID</th>
                 <th></th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {% for tas in  task %}    
+              {% for tas in  task %}  
+               
 
             <tr>
               
             <td>{{tas['taskname']}}</td>
-            <td>{{tas['description']}}</td>            
-            <td><a class="btn btn-primary">Edit</a></td>      
-            <td><a class="btn btn-danger">Delete</a></td>
+            <td>{{tas['description']}}</td> 
+            <td>{{tas['_id']}}</td>           
+            <td><a href="{{url_for('edittask', _id=tas['_id'])}}" class="btn btn-primary" ><button type="submit">EDIT</button></a></td>      
+            <td><a href="{{url_for('deletetask', _id=tas['_id'])}}" class="btn btn-danger"><button type="submit">Delete</button></a></td>
           </tr> 
               {% endfor %}
               </tbody>
