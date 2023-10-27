@@ -3,7 +3,7 @@ import pymongo
 from bson import ObjectId
 import bcrypt
 import os,re
-
+import ast
 app = Flask(__name__)
 app.secret_key = "testing"
 
@@ -112,14 +112,18 @@ def tasks():
 def addtask():
     mesage=''
     if request.method == 'POST' and 'taskname' in request.form and 'description' in request.form:
+        user_id = session['userid']
+        #print(user_id)
         taskname = request.form['taskname']
         description = request.form['description']
         task_exist = db.task_info.find_one({"taskname":taskname})
+        #use= db.user_info.finf_one({"_id": ObjectId(id)})
+        user_email= session['email']
         #db.task_info.insert_many([{'taskname': taskname ,'description': description}])
         if task_exist:
             mesage = 'Task name already exists ! please try other something new'
         else:
-            db.task_info.insert_many([{'taskname': taskname ,'description': description}])
+            db.task_info.insert_many([{'taskname': taskname ,'description': description,'assigned_user': user_email}])
             mesage= 'You have successfully added task!'
             return redirect(url_for('tasks'))
        # return redirect(url_for('tasks'))
@@ -132,6 +136,8 @@ def edittask():
         #print(id)
         tas=db.task_info.find({"_id": ObjectId(id)})
         #print(tas)
+        all_user=db.user_info.find({})
+        print(all_user)
         #if request.method == 'POST':
          #   taskna=request.form['taskname']
           #  taskde=request.form['description']
@@ -139,19 +145,30 @@ def edittask():
             #task_id=str(t['_id'])
             #db.task_info.update([{'taskname': taskna ,'description': taskde}])
             #return redirect(url_for('tasks'))
-        return render_template('edittask.html', tasks=tas,id=id)
+        return render_template('edittask.html', tasks=tas,id=id,all_user=all_user)
 
            
-@app.route("/edittask1", methods=['POST'])
+@app.route("/edittask1", methods=['POST','GET'])
 def edittask1():
     taskname = request.values.get('taskname')
     #taskname = request.form['taskname']
+    rows=[]
     description = request.values.get('description')
+    #email= ast.literal_eval(request.form.get('assigned_task'))
+    email=request.form.get('assigned_user')
+    print(email)
+    #check selected email user id 
+    
+    #cursor = object_collection.find({"email":1})
+    #for document in cursor:
+     #   rows.append(document['email'])
+    #cursor= db.user_info.find_one({})
     # description = request.form['description']
-
+    #all_user=db.user_info.find({})
+    #print(all_user)
     id= request.values.get('_id')
-    print(id)
-    db.task_info.update_many({"_id": ObjectId(id)}, {'$set': {'taskname': taskname ,'description': description}})
+    #print(id)
+    db.task_info.update_many({"_id": ObjectId(id)}, {'$set': {'taskname': taskname ,'description': description,'assigned_user': email}})
     return redirect(url_for('tasks'))
     
 

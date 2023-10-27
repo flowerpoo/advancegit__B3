@@ -37,7 +37,7 @@
                 
                 <th>Task</th>
                 <th>Desc</th>
-                <th>ID</th>
+                <th>Assigned user</th>
                 <th></th>
                 <th></th>
               </tr>
@@ -50,8 +50,8 @@
               
             <td>{{tas['taskname']}}</td>
             <td>{{tas['description']}}</td> 
-            <td>{{tas['_id']}}</td>           
-            <td><a href="{{url_for('edittask', _id=tas['_id'])}}" class="btn btn-primary" ><button type="submit">EDIT</button></a></td>      
+            <td>{{tas['assigned_user']}}</td>           
+            <td><a href="{{url_for('edittask', _id=tas['_id'],user_id=tas['assigned_userid'])}}" class="btn btn-primary" ><button type="submit">EDIT</button></a></td>      
             <td><a href="{{url_for('deletetask', _id=tas['_id'])}}" class="btn btn-danger"><button type="submit">Delete</button></a></td>
           </tr> 
               {% endfor %}

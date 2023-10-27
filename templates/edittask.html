@@ -24,7 +24,7 @@
       <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-            <h3>Task Edit</h3>
+            <h3>Edit Your Task </h3>
             <form method="post" id="taskForm" action="{{ url_for('edittask1')}}">
               {% for task in tasks %}
                 <div class="card-body">               
@@ -44,7 +44,24 @@
                             <span class="fas fa-user"></span>
                           </div>
                         </div>
-                    </div>                  
+                    </div> 
+                    <div class="input-group">
+                      <select class="form-control" name="assigned_user" id = "assigned_user" value="assigned_user">
+                          {% for user in all_user %}
+                              <option value="{{user['email']}} ">
+                                  {{  user.email}}
+                              </option>
+                          {% endfor %}
+                      </select>
+                      <div class="input-group-append">
+                        <button type=submit value="" class="btn btn-sm btn-info">
+                            <i class="fas fa-user-check"></i>
+                            <a class="mr-1">assign</a>
+                        </button>
+                    </div>
+                      
+                  </div>
+                    
                     
                        <input type="hidden" name="_id"  value="{{task['_id']}}" />                                  
                         <input type="hidden" name="action" id="action" value="updatetask" />
